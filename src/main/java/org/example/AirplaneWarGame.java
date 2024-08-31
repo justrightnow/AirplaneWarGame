@@ -125,7 +125,7 @@ class PlayerPlane {
         this.y = y;
         try {
             // 加载图片
-            image = ImageIO.read(new File("img.png"));
+            image = ImageIO.read(new File("/Users/weike/Pictures/飞机.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,31 +203,67 @@ class PlayerPlane {
 //    }
 //}
 
+//class EnemyPlane {
+//    private int x, y;
+//
+//    public EnemyPlane(int x, int y) {
+//        this.x = x;
+//        this.y = y;
+//    }
+//
+//    public void move() {
+//        y += 2; // Move downwards
+//        if (y > 600) { // Remove if out of screen
+//            y = -50;
+//            x = new Random().nextInt(800);
+//        }
+//    }
+//
+//    public void draw(Graphics g) {
+//        g.setColor(Color.RED);
+//        g.fillRect(x, y, 50, 50); // Simple rectangle representation
+//    }
+//
+//    public Rectangle getBounds() {
+//        return new Rectangle(x, y, 50, 50);
+//    }
+//}
+
+
 class EnemyPlane {
     private int x, y;
+    private Image image;
 
     public EnemyPlane(int x, int y) {
         this.x = x;
         this.y = y;
+        try {
+            // 加载图片
+            image = ImageIO.read(new File("/Users/weike/Pictures/飞机敌.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void move() {
-        y += 2; // Move downwards
-        if (y > 600) { // Remove if out of screen
+        y += 2; // 向下移动
+        if (y > 600) { // 如果超出屏幕，重置位置
             y = -50;
             x = new Random().nextInt(800);
         }
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, 50, 50); // Simple rectangle representation
+        // 绘制图片
+        g.drawImage(image, x, y, null);
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, 50, 50);
+        // 返回图片的边界框
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
 }
+
 
 class Bullet {
     private int x, y;
@@ -242,8 +278,8 @@ class Bullet {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, 5, 10); // Simple rectangle representation
+        g.setColor(Color.RED);
+        g.fillRect(x, y, 5, 20); // Simple rectangle representation
     }
 
     public Rectangle getBounds() {
