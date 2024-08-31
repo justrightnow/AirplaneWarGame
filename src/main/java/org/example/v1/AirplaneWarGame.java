@@ -1,4 +1,4 @@
-package org.example;
+package org.example.v1;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,10 +114,12 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
 
 class PlayerPlane {
     private int x, y, dx;
+    private Image playerImage;
 
     public PlayerPlane(int x, int y) {
         this.x = x;
         this.y = y;
+        playerImage = new ImageIcon(getClass().getResource("player_plane.png")).getImage();
     }
 
     public void move() {
@@ -143,8 +145,7 @@ class PlayerPlane {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, 50, 50); // Simple rectangle representation
+        g.drawImage(playerImage, x, y, null);
     }
 
     public Rectangle getBounds() {
@@ -154,10 +155,12 @@ class PlayerPlane {
 
 class EnemyPlane {
     private int x, y;
+    private Image enemyImage;
 
     public EnemyPlane(int x, int y) {
         this.x = x;
         this.y = y;
+        enemyImage = new ImageIcon(getClass().getResource("enemy_plane.png")).getImage();
     }
 
     public void move() {
@@ -169,8 +172,7 @@ class EnemyPlane {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, 50, 50); // Simple rectangle representation
+        g.drawImage(enemyImage, x, y, null);
     }
 
     public Rectangle getBounds() {
@@ -191,7 +193,7 @@ class Bullet {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.YELLOW);
+        g.setColor(Color.RED);
         g.fillRect(x, y, 5, 10); // Simple rectangle representation
     }
 
