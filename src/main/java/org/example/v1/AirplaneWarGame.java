@@ -1,4 +1,4 @@
-package org.example;
+package org.example.v1;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +17,10 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
     private List<EnemyPlane> enemies;
     private List<Bullet> bullets;
     private Random random;
+    private boolean gameOver;
+    private int score; // 新的实例变量来存储分数
+
+
 
     public AirplaneWarGame() {
         setFocusable(true);
@@ -28,6 +32,9 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
         random = new Random();
         timer = new Timer(15, this);
         timer.start();
+
+        gameOver = false;
+        score = 0; // 初始化分数为0
     }
 
     @Override
@@ -40,6 +47,19 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
         for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
+
+        if (gameOver) {
+            Font gameOverFont = new Font("Times New Roman", Font.BOLD, 32);
+            Graphics2D g2D = (Graphics2D) g;
+            g2D.setFont(gameOverFont);
+            g2D.drawString("Game Over", 300, 300);
+        }
+
+        // 在面板上显示分数
+        Font scoreFont = new Font("Times New Roman", Font.PLAIN, 18);
+        Graphics2D g2D2 = (Graphics2D) g;
+        g2D2.setFont(scoreFont);
+        g2D2.drawString("Score: " + score, 10, 20);
     }
 
     @Override
@@ -53,6 +73,14 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
         }
         checkCollisions();
         spawnEnemies();
+
+        // 检查玩家与敌机是否碰撞
+        if (playerCollision()) {
+            gameOver = true;
+
+            timer.stop();
+        }
+
         repaint();
     }
 
@@ -68,6 +96,8 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
                 if (bulletRect.intersects(enemyRect)) {
                     bulletIterator.remove();
                     enemyIterator.remove();
+                    // 增加得分
+                    score++;
                     break;
                 }
             }
@@ -79,6 +109,17 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
             // 3% chance to spawn an enemy each frame
             enemies.add(new EnemyPlane(random.nextInt(800), 0));
         }
+    }
+
+    private boolean playerCollision() {
+        Rectangle playerRect = player.getBounds();
+        for (EnemyPlane enemy : enemies) {
+            Rectangle enemyRect = enemy.getBounds();
+            if (playerRect.intersects(enemyRect)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -163,7 +204,6 @@ class PlayerPlane {
     }
 }
 
-
 class EnemyPlane {
     private int x, y;
     private Image image;
@@ -198,7 +238,6 @@ class EnemyPlane {
     }
 }
 
-
 class Bullet {
     private int x, y;
 
@@ -208,15 +247,18 @@ class Bullet {
     }
 
     public void move() {
-        y -= 4; // Move upwards
+        y -= 4; // 向上移动
     }
 
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, 5, 20); // Simple rectangle representation
+        g.fillRect(x, y, 5, 20); // 简单的矩形表示
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, 5, 10);
     }
 }
+
+
+
