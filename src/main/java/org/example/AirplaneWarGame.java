@@ -1,8 +1,11 @@
 package org.example;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -115,10 +118,17 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
 
 class PlayerPlane {
     private int x, y, dx;
+    private Image image;
 
     public PlayerPlane(int x, int y) {
         this.x = x;
         this.y = y;
+        try {
+            // 加载图片
+            image = ImageIO.read(new File("img.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void move() {
@@ -127,7 +137,7 @@ class PlayerPlane {
             x = 0;
         }
         if (x > 750) {
-            x = 750; // Assuming the player plane's width is 50
+            x = 750; // 假设玩家飞机的宽度是50
         }
     }
 
@@ -144,14 +154,54 @@ class PlayerPlane {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, 50, 50); // Simple rectangle representation
+        // 绘制图片
+        g.drawImage(image, x, y, null);
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, 50, 50);
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
 }
+
+//class PlayerPlane {
+//    private int x, y, dx;
+//
+//    public PlayerPlane(int x, int y) {
+//        this.x = x;
+//        this.y = y;
+//    }
+//
+//    public void move() {
+//        x += dx;
+//        if (x < 0) {
+//            x = 0;
+//        }
+//        if (x > 750) {
+//            x = 750; // Assuming the player plane's width is 50
+//        }
+//    }
+//
+//    public void setDx(int dx) {
+//        this.dx = dx;
+//    }
+//
+//    public int getX() {
+//        return x;
+//    }
+//
+//    public int getY() {
+//        return y;
+//    }
+//
+//    public void draw(Graphics g) {
+//        g.setColor(Color.BLUE);
+//        g.fillRect(x, y, 50, 50); // Simple rectangle representation
+//    }
+//
+//    public Rectangle getBounds() {
+//        return new Rectangle(x, y, 50, 50);
+//    }
+//}
 
 class EnemyPlane {
     private int x, y;
