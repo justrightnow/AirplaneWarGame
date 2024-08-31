@@ -72,7 +72,8 @@ public class AirplaneWarGame extends JPanel implements ActionListener, KeyListen
     }
 
     private void spawnEnemies() {
-        if (random.nextInt(100) < 3) { // 3% chance to spawn an enemy each frame
+        if (random.nextInt(100) < 3) {
+            // 3% chance to spawn an enemy each frame
             enemies.add(new EnemyPlane(random.nextInt(800), 0));
         }
     }
